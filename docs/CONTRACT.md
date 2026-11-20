@@ -5,7 +5,7 @@
 
 ## ۱. اصول ثابت
 - معماری Headless: جنگو فقط API و پنل ادمین؛ Next.js فقط از طریق API با جنگو حرف می‌زند.
-- Python 3.12+، Django LTS، DRF، PostgreSQL (SQLite ممنوع حتی در توسعه)، Redis، MinIO، Nginx، Docker Compose.
+- Python 3.12+، Django LTS، DRF، PostgreSQL (SQLite ممنوع حتی در توسعه)، Redis، ذخیره‌ساز سازگار با S3 (MinIO؛ ایمیج: `pgsty/silo`، بخش ۹)، Nginx، Docker Compose.
 - فرانتاند: Next.js App Router + TypeScript (strict) + Tailwind.
 - احراز هویت: مدل کاربر سفارشی (شناسه = موبایل ایرانی)، SimpleJWT در کوکی httpOnly، هش Argon2.
 - مبلغ‌ها همیشه **عدد صحیح** (واحد: تومان). هرگز اعشاری.
@@ -156,7 +156,7 @@ API_INTERNAL_URL=http://backend:8000/api/v1
 | frontend (Next.js) | 3000 (داخلی) |
 | backend (Django/gunicorn) | 8000 (داخلی) |
 | postgres / redis | 5432 / 6379 (داخلی) |
-| minio API / console | 9000 / 9001 |
+| minio (pgsty/silo) API / console | 9000 / 9001 |
 
 `/` ← frontend · `/api/` و `/admin/` ← backend.
 
@@ -171,3 +171,5 @@ API_INTERNAL_URL=http://backend:8000/api/v1
 |---|---|
 | افزودن `Book.cover_alt` و `Book.updated_at` | الزام «متن جایگزین تصویر» در پنل و `lastmod` در sitemap |
 | افزودن `created_at` به `Book` | مرتب‌سازی «جدیدترین» |
+| ایمیج MinIO: `pgsty/silo` (فورک جامعه‌ی MinIO) به‌جای `minio/minio` | در سپتامبر ۲۰۲۶ شرکت MinIO ایمیج‌های رسمی را از Docker Hub حذف کرد (`pull access denied`). فورک با همان API سازگار با S3 و همان متغیرهای `MINIO_*` است. **باید به استاد اطلاع داده شود.** |
+| ساخت bucket با اسکریپت `backend/scripts/create_bucket.py` (boto3) به‌جای ایمیج `minio/mc` | ایمیج `minio/mc` هم حذف شده است |
