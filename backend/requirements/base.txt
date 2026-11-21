@@ -9,3 +9,4 @@ argon2-cffi>=23.1
 django-storages[s3]>=1.14
 gunicorn>=22.0
 whitenoise>=6.6
+Pillow>=10.0

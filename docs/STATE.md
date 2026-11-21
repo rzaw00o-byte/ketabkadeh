@@ -8,6 +8,7 @@
 - [x] اسکلت Django (تنظیمات چهارمحیطه، PostgreSQL، Redis، Argon2، کاربر سفارشی با موبایل)
 - [x] Docker Compose: db، redis، minio، backend، nginx (bucket با اسکریپت `create_bucket.py` ساخته می‌شود)
 - [x] ۱۳ تست اولیه (کاربر، موبایل، Argon2، ادمین، health، اسکریپت bucket)
+- [x] مدل‌های کاتالوگ (Author، Publisher، Category، Book، BookAuthor، Edition) و `SlugRedirect` در اپ seo، با ادمین و فیلدهای سئو، دستور `seed_catalog` و ۴۰ تست
 
 ## تصمیم‌ها
 - واحد پول: تومان (عدد صحیح)
@@ -19,7 +20,8 @@
 ## مرحله بعد
 - [x] `docker compose up --build` موفق بود؛ ۱۳ تست روی PostgreSQL واقعی پاس شد
 - [x] ابرکاربر ساخته شد و پنل `/admin/` (فارسی، RTL) کار می‌کند
-- [ ] اسکلت Next.js (چت فرانتاند)
+- [ ] API کاتالوگ (`/categories/`، `/books/`، `/books/{slug}/`، `/authors/{slug}/`، `/publishers/{slug}/`) و سپس نمونه‌ی JSON بقیه‌ی endpointها برای چت فرانتاند
+- [x] اسکلت Next.js و لایه‌ی `lib/api` (چت فرانتاند)
 - [ ] هفته ۲: API احراز هویت (JWT در کوکی httpOnly)، ERD
 - [x] CI نوشته شد (`.github/workflows/ci.yml`: ruff + django check + pytest با Postgres و Redis)؛ نتیجه اولین اجرا در تب Actions گیت‌هاب بررسی شود
 
