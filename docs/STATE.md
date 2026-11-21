@@ -17,11 +17,11 @@
 - تقسیم کار: Claude۱ بک‌اند + Docker/CI، Claude۲ فرانتاند و سئو، ChatGPT تست/مستندات/بازبینی
 
 ## مرحله بعد
-- [ ] اجرای `docker compose up --build` و تأیید `http://localhost/api/v1/health/`
-- [ ] ساخت ابرکاربر و ورود به `/admin/`
+- [x] `docker compose up --build` موفق بود؛ ۱۳ تست روی PostgreSQL واقعی پاس شد
+- [x] ابرکاربر ساخته شد و پنل `/admin/` (فارسی، RTL) کار می‌کند
 - [ ] اسکلت Next.js (چت فرانتاند)
 - [ ] هفته ۲: API احراز هویت (JWT در کوکی httpOnly)، ERD
-- [ ] CI (GitHub Actions: ruff + pytest)
+- [x] CI نوشته شد (`.github/workflows/ci.yml`: ruff + django check + pytest با Postgres و Redis)؛ نتیجه اولین اجرا در تب Actions گیت‌هاب بررسی شود
 
 ## یادداشت برای چت‌های دیگر
 - هنوز هیچ تغییری در API نسبت به CONTRACT.md نبوده.
