@@ -7,6 +7,11 @@ import { formatNumber, formatToman, formatYear } from "@/lib/format";
 
 // ISR: صفحه حداکثر هر ۶۰ ثانیه دوباره ساخته می‌شود
 export const revalidate = 60;
+// آرایه‌ی خالی: هیچ کتابی موقع build ساخته نمی‌شود (build به بک‌اند وابسته نیست)
+// هر کتاب در اولین بازدید ساخته و کش می‌شود، و بعد هر ۶۰ ثانیه تازه می‌شود (ISR)
+export async function generateStaticParams() {
+  return [];
+}
 
 type Props = { params: Promise<{ slug: string }> };
 
