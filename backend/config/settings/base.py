@@ -3,6 +3,7 @@
 import os
 from datetime import timedelta
 from pathlib import Path
+from urllib.parse import urlparse
 
 from django.core.exceptions import ImproperlyConfigured
 
@@ -115,7 +116,13 @@ AWS_STORAGE_BUCKET_NAME = env("MINIO_BUCKET", "ketabkadeh")
 AWS_S3_ENDPOINT_URL = f"http://{env('MINIO_ENDPOINT', 'minio:9000')}"
 AWS_S3_SIGNATURE_VERSION = "s3v4"
 AWS_S3_ADDRESSING_STYLE = "path"
-AWS_QUERYSTRING_AUTH = True
+# جلدها و عکس‌ها عمومی‌اند: لینک کامل و بدون امضا (برای og:image و کش). فایل‌های الکترونیکی
+# در پیشوند ebooks/ خصوصی می‌مانند و فقط با لینک Presigned موقت داده می‌شوند.
+MINIO_PUBLIC_URL = env("MINIO_PUBLIC_URL", "http://localhost:9000")
+_public = urlparse(MINIO_PUBLIC_URL)
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_CUSTOM_DOMAIN = f"{_public.netloc}/{AWS_STORAGE_BUCKET_NAME}"
+AWS_S3_URL_PROTOCOL = f"{_public.scheme}:"
 
 STORAGES = {
     "default": {"BACKEND": "storages.backends.s3.S3Storage"},
@@ -125,8 +132,13 @@ STORAGES = {
 # --- DRF و مستند API ---
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "DEFAULT_PAGINATION_CLASS": "config.api.StandardPagination",
     "PAGE_SIZE": 12,
+    "EXCEPTION_HANDLER": "config.api.api_exception_handler",
+    "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
+    "DEFAULT_AUTHENTICATION_CLASSES": [],
+    # پارامتر ?format در فیلتر کتاب‌ها (print/ebook) نباید با پسوند فرمت DRF اشتباه گرفته شود
+    "URL_FORMAT_OVERRIDE": None,
 }
 SPECTACULAR_SETTINGS = {
     "TITLE": "Ketabkadeh API",

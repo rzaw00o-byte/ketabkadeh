@@ -3,6 +3,7 @@
 قبل از بالا آمدن Django اجرا می‌شود و تا آماده شدن سرویس ذخیره‌ساز تلاش مجدد می‌کند.
 """
 
+import json
 import os
 import sys
 import time
@@ -37,6 +38,30 @@ def ensure_bucket(client, bucket):
     return True
 
 
+def public_read_policy(bucket):
+    """فقط جلد کتاب‌ها و عکس نویسنده‌ها عمومی‌اند؛ ebooks/ خصوصی می‌ماند."""
+    return json.dumps(
+        {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Principal": {"AWS": ["*"]},
+                    "Action": ["s3:GetObject"],
+                    "Resource": [
+                        f"arn:aws:s3:::{bucket}/covers/*",
+                        f"arn:aws:s3:::{bucket}/authors/*",
+                    ],
+                }
+            ],
+        }
+    )
+
+
+def ensure_public_read(client, bucket):
+    client.put_bucket_policy(Bucket=bucket, Policy=public_read_policy(bucket))
+
+
 def main(retries=30, delay=2):
     bucket = os.environ.get("MINIO_BUCKET", "ketabkadeh")
     client = make_client()
@@ -48,6 +73,11 @@ def main(retries=30, delay=2):
             time.sleep(delay)
         else:
             print(f"bucket «{bucket}» {'ساخته شد' if created else 'از قبل وجود داشت'}.")
+            try:
+                ensure_public_read(client, bucket)
+            except (BotoCoreError, ClientError) as error:
+                # نبودن دسترسی عمومی نباید بالا آمدن برنامه را متوقف کند
+                print(f"هشدار: دسترسی عمومی جلدها تنظیم نشد: {error}", file=sys.stderr)
             return 0
     print("ساخت bucket ناموفق بود.", file=sys.stderr)
     return 1

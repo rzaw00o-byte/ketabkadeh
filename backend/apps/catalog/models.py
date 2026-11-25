@@ -82,6 +82,11 @@ class Category(SlugModel):
             node = node.parent
         return list(reversed(chain))
 
+    @property
+    def path(self):
+        """نشانی صفحه‌ی دسته در فرانتاند: /category/ریشه/.../این‌دسته"""
+        return "/category/" + "/".join(c.slug for c in self.ancestors(include_self=True))
+
     def clean(self):
         node = self.parent
         while node is not None:

@@ -1,0 +1,195 @@
+{
+  "GET /api/v1/books/پیرمرد-و-دریا/": {
+    "id": 7,
+    "title": "پیرمرد و دریا",
+    "slug": "پیرمرد-و-دریا",
+    "isbn": null,
+    "description": "داستان ماهیگیری پیر و نبردش با ماهی بزرگ، نوشته‌ی ارنست همینگوی.",
+    "pages": 120,
+    "published_year": 1331,
+    "cover": {
+      "url": "http://localhost:9000/ketabkadeh/covers/2026/11/pirmard.jpg",
+      "alt": "جلد کتاب پیرمرد و دریا",
+      "width": 600,
+      "height": 900
+    },
+    "authors": [
+      {
+        "name": "ارنست همینگوی",
+        "slug": "ارنست-همینگوی",
+        "role": "author"
+      },
+      {
+        "name": "نجف دریابندری",
+        "slug": "نجف-دریابندری",
+        "role": "translator"
+      }
+    ],
+    "publisher": {
+      "name": "نشر آزمایشی دو",
+      "slug": "نشر-آزمایشی-دو"
+    },
+    "category": {
+      "name": "رمان",
+      "slug": "رمان",
+      "path": "/category/ادبیات/رمان",
+      "breadcrumb": [
+        {
+          "name": "ادبیات",
+          "slug": "ادبیات",
+          "path": "/category/ادبیات"
+        },
+        {
+          "name": "رمان",
+          "slug": "رمان",
+          "path": "/category/ادبیات/رمان"
+        }
+      ]
+    },
+    "editions": [
+      {
+        "id": 12,
+        "format": "ebook",
+        "price": 70000,
+        "stock": null,
+        "in_stock": true
+      },
+      {
+        "id": 11,
+        "format": "print",
+        "price": 140000,
+        "stock": 40,
+        "in_stock": true
+      }
+    ],
+    "rating": {
+      "average": null,
+      "count": 0
+    },
+    "seo": {
+      "title": "پیرمرد و دریا",
+      "description": "داستان ماهیگیری پیر و نبردش با ماهی بزرگ، نوشته‌ی ارنست همینگوی.",
+      "is_indexable": true,
+      "canonical_path": "/book/پیرمرد-و-دریا"
+    },
+    "updated_at": "2026-11-21T18:08:58.200240Z"
+  },
+  "GET /api/v1/books/?q=کلیدر": {
+    "count": 1,
+    "next": null,
+    "previous": null,
+    "results": [
+      {
+        "id": 6,
+        "title": "کلیدر",
+        "slug": "کلیدر",
+        "cover": null,
+        "authors": [
+          {
+            "name": "محمود دولت‌آبادی",
+            "slug": "محمود-دولتآبادی",
+            "role": "author"
+          }
+        ],
+        "price_from": 350000,
+        "in_stock": true,
+        "formats": [
+          "ebook",
+          "print"
+        ]
+      }
+    ]
+  },
+  "GET /api/v1/categories/": [
+    {
+      "name": "ادبیات",
+      "slug": "ادبیات",
+      "path": "/category/ادبیات",
+      "children": [
+        {
+          "name": "داستان کوتاه",
+          "slug": "داستان-کوتاه",
+          "path": "/category/ادبیات/داستان-کوتاه",
+          "children": []
+        },
+        {
+          "name": "رمان",
+          "slug": "رمان",
+          "path": "/category/ادبیات/رمان",
+          "children": []
+        },
+        {
+          "name": "شعر",
+          "slug": "شعر",
+          "path": "/category/ادبیات/شعر",
+          "children": []
+        }
+      ]
+    }
+  ],
+  "GET /api/v1/categories/رمان/": {
+    "name": "رمان",
+    "slug": "رمان",
+    "path": "/category/ادبیات/رمان",
+    "breadcrumb": [
+      {
+        "name": "ادبیات",
+        "slug": "ادبیات",
+        "path": "/category/ادبیات"
+      },
+      {
+        "name": "رمان",
+        "slug": "رمان",
+        "path": "/category/ادبیات/رمان"
+      }
+    ],
+    "children": []
+  },
+  "GET /api/v1/authors/صادق-هدایت/ (books omitted)": {
+    "name": "صادق هدایت",
+    "slug": "صادق-هدایت",
+    "bio": "",
+    "photo": null,
+    "seo": {
+      "title": "صادق هدایت",
+      "description": "",
+      "is_indexable": true,
+      "canonical_path": "/author/صادق-هدایت"
+    }
+  },
+  "GET /api/v1/books/نیست/ (404)": {
+    "error": {
+      "code": "not_found",
+      "message": "موردی پیدا نشد.",
+      "fields": {}
+    }
+  },
+  "GET /api/v1/books/?ordering=x (400)": {
+    "error": {
+      "code": "validation_error",
+      "message": "اطلاعات واردشده معتبر نیست.",
+      "fields": {
+        "ordering": [
+          "مقدار مجاز: price, -price, -published_year, -created_at"
+        ]
+      }
+    }
+  },
+  "GET /api/v1/seo/sitemap/ (first 3)": [
+    {
+      "path": "/book/نسخهی-فقط-الکترونیکی-نمونه",
+      "lastmod": "2026-11-21T18:08:58.203523Z",
+      "kind": "book"
+    },
+    {
+      "path": "/book/پیرمرد-و-دریا",
+      "lastmod": "2026-11-21T18:08:58.200240Z",
+      "kind": "book"
+    },
+    {
+      "path": "/book/کلیدر",
+      "lastmod": "2026-11-21T18:08:58.197344Z",
+      "kind": "book"
+    }
+  ]
+}

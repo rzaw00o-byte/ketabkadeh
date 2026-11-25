@@ -126,6 +126,26 @@ DownloadGrant(id, user, edition, order_item, expires_at)
 ```
 کدهای وضعیت: 400 اعتبارسنجی، 401 بدون ورود، 403 بدون مجوز، 404 یافت نشد، 409 تعارض (مثلاً موجودی)، 429 محدودیت نرخ.
 
+## ۴-ب. جزئیات پیاده‌شده‌ی API کاتالوگ (مرجع برای فرانتاند)
+نمونه‌ی خروجی واقعی همه‌ی موارد زیر در `docs/api-samples.json` است؛ مستند تعاملی روی `/api/v1/docs/` و شمای OpenAPI روی `/api/v1/schema/`.
+
+- **فقط JSON**، کتاب‌های `is_active=False` در API دیده نمی‌شوند (۴۰۴).
+- **اسلاگ‌ها فارسی‌اند** (مثل `بوف-کور`)؛ در نشانی باید percent-encode شوند و فرانتاند باید `params.slug` را decode کند.
+- **قالب خطا** در همه‌ی endpointها: `{"error": {"code", "message", "fields"}}` با کدهای `validation_error`، `not_found`، ...؛ برای ۴۰۴ در `/books/{slug}/` فرانتاند `notFound()` صدا می‌زند.
+- **صفحه‌بندی:** `page`، `page_size` (پیش‌فرض ۱۲، حداکثر ۴۸). صفحه‌ی خارج از محدوده ← ۴۰۴.
+- **آیتم فهرست `/books/`:** `{id, title, slug, cover, authors[{name,slug,role}], price_from, in_stock, formats[]}`؛ `price_from` ارزان‌ترین نسخه (تومان).
+- **فیلترهای `/books/`:** `q` (عنوان یا نام نویسنده)، `category` (اسلاگ تکی؛ زیرمجموعه‌ها هم شامل می‌شوند)، `author`، `publisher`، `format` (`print`|`ebook`)، `min_price`، `max_price`، `in_stock=true`، `ordering` (`price`، `-price`، `-published_year`، `-created_at`). مقدار نامعتبر ← ۴۰۰.
+  - شرط‌های `format` و `min_price` و `max_price` و `in_stock` روی **یک نسخه‌ی واحد** اعمال می‌شوند.
+  - `in_stock`: چاپی با `stock > 0` یا الکترونیکی با فایل آپلودشده.
+- **جلد (`cover`):** `null` اگر جلد نباشد؛ وگرنه `{url, alt, width, height}`. `url` **کامل، عمومی و بدون امضا** است (مثل `http://localhost:9000/ketabkadeh/covers/...`)، پس برای `og:image` و کش مناسب است. فقط پیشوندهای `covers/` و `authors/` عمومی‌اند؛ `ebooks/` خصوصی است.
+- **`/categories/`**: درخت `[{name, slug, path, children[...]}]`؛ **`/categories/{slug}/`**: `{name, slug, path, breadcrumb[{name,slug,path}], children[{name,slug,path}]}`. `slug` یک اسلاگ تکی و یکتاست و `path` مسیر کامل صفحه‌ی فرانتاند (`/category/ادبیات/رمان`). `breadcrumb` از ریشه تا **خود دسته** است. همین ساختار در `category` جزئیات کتاب هم هست.
+- **`seo` در جزئیات کتاب:** `title` = `seo_title` یا عنوان کتاب؛ `description` = `seo_description` یا ۱۶۰ نویسه‌ی اول توضیحات؛ `canonical_path` = `/book/{slug}`. قالب «... | کتابکده» را فرانتاند می‌افزاید.
+- **`rating`:** تا ساخته شدن اپ نظرات همیشه `{"average": null, "count": 0}`.
+- **`/authors/{slug}/`:** `{name, slug, bio, photo(url|null), books[آیتم فهرست], seo}`؛ **`/publishers/{slug}/`:** `{name, slug, books[]}`.
+- **`/seo/sitemap/`:** فهرست ساده `[{path, lastmod, kind}]` با `kind` برابر `book|author|category`؛ فقط کتاب فعالِ `is_indexable`، نویسنده‌های دارای چنین کتابی و دسته‌های دارای کتاب (با والدها). `lastmod` فقط برای کتاب مقدار دارد.
+- **`/seo/redirect/?path=/book/قدیمی`:** `{"new_path": "/book/جدید"}` یا ۴۰۴. فرانتاند باید با **۳۰۱** هدایت کند (`redirect()` در Next.js کد ۳۰۷ می‌دهد).
+- پارامتر `?format=` برای فیلتر کتاب استفاده می‌شود؛ بنابراین پسوند فرمت DRF غیرفعال است.
+
 ## ۵. راهبرد رندر (نمونه سند استاد؛ در گزارش و README توجیه شود)
 | صفحه | روش | دلیل |
 |---|---|---|
@@ -179,3 +199,4 @@ API_INTERNAL_URL=http://backend:8000/api/v1
 | اسلاگ `Category` در کل سیستم یکتاست و درخت با `parent` ساخته می‌شود (بدون `django-mptt`) | ساده‌تر و قابل‌توضیح در دفاع؛ عمق دسته‌ها کم است |
 | قیدهای `Edition`: هر `(book, format)` یکتا؛ چاپی حتماً `stock` دارد؛ الکترونیکی `stock` ندارد (قید در پایگاه داده) | اجرای قاعده‌ی «موجودی فقط برای نسخه‌ی چاپی معنا دارد» |
 | `Edition.in_stock`: چاپی ⇐ `stock > 0`؛ الکترونیکی ⇐ `file_key` پر باشد | کتاب ناموجود صفحه می‌ماند و فقط دکمه‌ی خرید غیرفعال می‌شود |
+| جلد و عکس‌ها با لینک عمومی بدون امضا و سیاست bucket فقط برای `covers/*` و `authors/*` | لینک امضادار منقضی می‌شود و برای `og:image` و کش مناسب نیست؛ فایل‌های الکترونیکی خصوصی می‌مانند |

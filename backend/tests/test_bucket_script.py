@@ -1,9 +1,11 @@
+import json
+
 import boto3
 import pytest
 from botocore.exceptions import ClientError
 from botocore.stub import Stubber
 
-from scripts.create_bucket import ensure_bucket
+from scripts.create_bucket import ensure_bucket, ensure_public_read, public_read_policy
 
 
 @pytest.fixture
@@ -38,3 +40,23 @@ def test_other_errors_are_raised(s3):
     stubber.add_client_error("head_bucket", service_error_code="403", http_status_code=403)
     with pytest.raises(ClientError):
         ensure_bucket(client, "ketabkadeh")
+
+
+def test_public_policy_exposes_only_covers_and_authors():
+    policy = json.loads(public_read_policy("ketabkadeh"))
+    resources = policy["Statement"][0]["Resource"]
+    assert resources == [
+        "arn:aws:s3:::ketabkadeh/covers/*",
+        "arn:aws:s3:::ketabkadeh/authors/*",
+    ]
+    assert not any("ebooks" in r for r in resources)
+
+
+def test_public_read_policy_is_applied(s3):
+    client, stubber = s3
+    stubber.add_response(
+        "put_bucket_policy",
+        {},
+        {"Bucket": "ketabkadeh", "Policy": public_read_policy("ketabkadeh")},
+    )
+    ensure_public_read(client, "ketabkadeh")

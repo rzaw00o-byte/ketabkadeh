@@ -13,6 +13,7 @@
 ## تصمیم‌ها
 - واحد پول: تومان (عدد صحیح)
 - Django 5.2 LTS، PostgreSQL 16، Redis 7
+- `?format=` فیلتر کتاب است؛ پسوند فرمت DRF خاموش شد
 - ایمیج‌های رسمی MinIO از Docker Hub حذف شده؛ از فورک `pgsty/silo` استفاده می‌شود (باید به استاد گفته شود)
 - اسکلت‌ها با ابزارهای رسمی؛ قالب فروشگاهی استفاده نمی‌شود
 - تقسیم کار: Claude۱ بک‌اند + Docker/CI، Claude۲ فرانتاند و سئو، ChatGPT تست/مستندات/بازبینی
@@ -20,7 +21,10 @@
 ## مرحله بعد
 - [x] `docker compose up --build` موفق بود؛ ۱۳ تست روی PostgreSQL واقعی پاس شد
 - [x] ابرکاربر ساخته شد و پنل `/admin/` (فارسی، RTL) کار می‌کند
-- [ ] API کاتالوگ (`/categories/`، `/books/`، `/books/{slug}/`، `/authors/{slug}/`، `/publishers/{slug}/`) و سپس نمونه‌ی JSON بقیه‌ی endpointها برای چت فرانتاند
+- [x] API کاتالوگ: `/categories/`، `/books/` (فیلتر و مرتب‌سازی)، `/books/{slug}/`، `/authors/{slug}/`، `/publishers/{slug}/`، `/seo/sitemap/`، `/seo/redirect/`، قالب خطای قرارداد و جلد عمومی؛ ۷۲ تست؛ نمونه‌ی واقعی در `docs/api-samples.json`
+- [ ] احراز هویت: ثبت‌نام، ورود، خروج، رفرش (JWT در کوکی httpOnly)
+- [ ] سبد خرید، سفارش، پرداخت آزمایشی
+- [ ] اپ نظرات (امتیاز واقعی)
 - [x] اسکلت Next.js و لایه‌ی `lib/api` (چت فرانتاند)
 - [ ] هفته ۲: API احراز هویت (JWT در کوکی httpOnly)، ERD
 - [x] CI نوشته شد (`.github/workflows/ci.yml`: ruff + django check + pytest با Postgres و Redis)؛ نتیجه اولین اجرا در تب Actions گیت‌هاب بررسی شود
