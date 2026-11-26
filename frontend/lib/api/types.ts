@@ -1,5 +1,4 @@
-// تایپ‌ها دقیقاً طبق CONTRACT.md بخش ۴
-
+// تایپ‌ها دقیقاً طبق CONTRACT.md بخش ۴ — منطبق با خروجی واقعی API
 export interface Paginated<T> {
   count: number;
   next: string | null;
@@ -7,7 +6,6 @@ export interface Paginated<T> {
   results: T[];
 }
 
-// قالب خطای همه endpointها
 export interface ApiErrorBody {
   error: {
     code: string;
@@ -19,8 +17,8 @@ export interface ApiErrorBody {
 export interface Cover {
   url: string;
   alt: string;
-  width: number;
-  height: number;
+  width: number | null;
+  height: number | null;
 }
 
 export interface BookAuthorRef {
@@ -41,30 +39,41 @@ export interface CategoryRef extends NamedRef {
 export interface Edition {
   id: number;
   format: "print" | "ebook";
-  price: number; // تومان، عدد صحیح
-  stock?: number; // فقط برای چاپی
+  price: number;
+  stock?: number | null;
   in_stock: boolean;
+}
+
+export interface BookListItem {
+  id: number;
+  title: string;
+  slug: string;
+  cover: Cover | null;
+  authors: BookAuthorRef[];
+  price_from: number | null;
+  in_stock: boolean;
+  formats: ("print" | "ebook")[];
 }
 
 export interface BookDetail {
   id: number;
   title: string;
   slug: string;
-  isbn: string;
+  isbn: string | null;
   description: string;
-  pages: number;
-  published_year: number;
-  cover: Cover;
+  pages: number | null;
+  published_year: number | null;
+  cover: Cover | null;
   authors: BookAuthorRef[];
   publisher: NamedRef;
   category: CategoryRef;
   editions: Edition[];
-  rating: { average: number; count: number };
+  rating: { average: number | null; count: number };
   seo: {
     title: string;
     description: string;
     is_indexable: boolean;
     canonical_path: string;
   };
-  updated_at: string; // ISO 8601 UTC
+  updated_at: string;
 }
