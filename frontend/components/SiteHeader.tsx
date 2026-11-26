@@ -192,13 +192,13 @@ export default function SiteHeader() {
                     >
                       خالی‌کردن
                     </button>
-                    <button
-                      type="button"
+                    <Link
+                      href="/cart"
                       onClick={() => setOpen(false)}
                       className="ms-auto rounded-lg bg-saffron px-4 py-2 text-sm font-bold text-white hover:bg-saffron-deep"
                     >
-                      ادامهٔ خرید
-                    </button>
+                      سبد و تسویهٔ حساب
+                    </Link>
                   </div>
                   <p className="mt-3 text-xs text-ink-soft">
                     تسویه‌حساب با ورود حساب کاربری و درگاه پرداخت فعال می‌شود.
