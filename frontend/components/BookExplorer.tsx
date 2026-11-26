@@ -20,36 +20,34 @@ export default function BookExplorer({ books }: { books: BookListItem[] }) {
 
   const filtered = useMemo(() => {
     const term = q.trim();
-    let list = books.filter((b) => {
+    const list = books.filter((b) => {
       const matchQ =
-        term === "" ||
-        b.title.includes(term) ||
-        b.authors.some((a) => a.name.includes(term));
+        term === "" || b.title.includes(term) || b.authors.some((a) => a.name.includes(term));
       const matchF = format === "all" || b.formats.includes(format);
       return matchQ && matchF;
     });
-    list = [...list];
+    const sorted = [...list];
     if (sort === "price-asc")
-      list.sort((a, b) => (a.price_from ?? Infinity) - (b.price_from ?? Infinity));
+      sorted.sort((a, b) => (a.price_from ?? Infinity) - (b.price_from ?? Infinity));
     else if (sort === "price-desc")
-      list.sort((a, b) => (b.price_from ?? -1) - (a.price_from ?? -1));
-    else list.sort((a, b) => b.id - a.id);
-    return list;
+      sorted.sort((a, b) => (b.price_from ?? -1) - (a.price_from ?? -1));
+    else sorted.sort((a, b) => b.id - a.id);
+    return sorted;
   }, [books, q, format, sort]);
 
   const dirty = q !== "" || format !== "all" || sort !== "newest";
 
   return (
     <section aria-label="کاوش کتاب‌ها">
-      <div className="flex flex-wrap items-center gap-3 rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
-        <label className="flex-1 min-w-[200px]">
+      <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-saffron/20 bg-parchment p-4 shadow-sm shadow-ink/5">
+        <label className="min-w-[200px] flex-1">
           <span className="sr-only">جستجو در عنوان یا نویسنده</span>
           <input
             type="search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="جستجوی کتاب یا نویسنده…"
-            className="w-full rounded-lg border border-stone-300 bg-[#faf6ee] px-4 py-2 text-stone-900 placeholder:text-stone-400 focus:border-amber-700 focus:outline-none"
+            className="w-full rounded-xl border border-saffron/25 bg-paper px-4 py-2 text-ink placeholder:text-ink-soft/50 focus:border-saffron focus:outline-none focus:ring-2 focus:ring-saffron/25"
           />
         </label>
         <div role="group" aria-label="قالب" className="flex gap-1">
@@ -59,10 +57,10 @@ export default function BookExplorer({ books }: { books: BookListItem[] }) {
               type="button"
               onClick={() => setFormat(o.value)}
               aria-pressed={format === o.value}
-              className={`rounded-lg px-3 py-2 text-sm font-bold transition-colors ${
+              className={`rounded-xl px-3 py-2 text-sm font-bold transition-all ${
                 format === o.value
-                  ? "bg-amber-700 text-white"
-                  : "bg-stone-100 text-stone-600 hover:bg-stone-200"
+                  ? "bg-gradient-to-l from-saffron to-lacquer text-white shadow-sm"
+                  : "bg-paper text-ink-soft hover:bg-saffron/15"
               }`}
             >
               {o.label}
@@ -74,7 +72,7 @@ export default function BookExplorer({ books }: { books: BookListItem[] }) {
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value as Sort)}
-            className="rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900 focus:border-amber-700 focus:outline-none"
+            className="rounded-xl border border-saffron/25 bg-parchment px-3 py-2 text-sm text-ink focus:border-saffron focus:outline-none"
           >
             <option value="newest">جدیدترین</option>
             <option value="price-asc">ارزان‌ترین</option>
@@ -89,25 +87,40 @@ export default function BookExplorer({ books }: { books: BookListItem[] }) {
               setFormat("all");
               setSort("newest");
             }}
-            className="rounded-lg px-3 py-2 text-sm font-bold text-amber-800 underline hover:text-amber-900"
+            className="rounded-xl px-3 py-2 text-sm font-bold text-lacquer underline hover:text-danger"
           >
             پاک‌کردن
           </button>
         )}
       </div>
 
-      <p className="mt-4 text-sm text-stone-500" aria-live="polite">
+      <p className="mt-4 text-sm font-bold text-ink-soft" aria-live="polite">
         {filtered.length} کتاب
       </p>
 
       {filtered.length === 0 ? (
-        <div className="mt-6 rounded-xl border border-dashed border-stone-300 bg-white p-12 text-center text-stone-500">
-          کتابی با این مشخصات پیدا نشد. فیلترها را تغییر دهید.
+        <div className="mt-6 flex flex-col items-center gap-3 rounded-2xl border border-dashed border-saffron/30 bg-parchment p-12 text-center text-ink-soft">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" stroke="var(--color-saffron)" strokeWidth="2" />
+            <path d="m20 20-3.5-3.5" stroke="var(--color-lacquer)" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+          <p>کتابی با این مشخصات پیدا نشد.</p>
+          <button
+            type="button"
+            onClick={() => {
+              setQ("");
+              setFormat("all");
+              setSort("newest");
+            }}
+            className="font-bold text-saffron-deep underline"
+          >
+            پاک‌کردن فیلترها
+          </button>
         </div>
       ) : (
         <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {filtered.map((b) => (
-            <BookCard key={b.id} book={b} />
+          {filtered.map((b, i) => (
+            <BookCard key={b.id} book={b} index={i} />
           ))}
         </div>
       )}
