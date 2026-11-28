@@ -1,13 +1,19 @@
-// نمایش عدد با رقم فارسی و جداکننده‌ی هزارگان
-export function formatNumber(n: number): string {
-  return n.toLocaleString("fa-IR");
+// قالب‌نمایش فارسی؛ همه‌ی کمک‌تابع‌ها null/undefined را می‌پذیرند
+// چون API برای فیلدهای اختیاری (pages، published_year، rating.average…) null برمی‌گرداند.
+const faGrouped = new Intl.NumberFormat("fa-IR");
+const faPlain = new Intl.NumberFormat("fa-IR", { useGrouping: false });
+
+export function formatNumber(value: number | null | undefined): string {
+  if (value === null || value === undefined) return "—";
+  return faGrouped.format(value);
 }
 
-// مبلغ همیشه عدد صحیح و به تومان است (طبق CONTRACT.md)
-export function formatToman(price: number): string {
-  return `${formatNumber(price)} تومان`;
+export function formatToman(value: number | null | undefined): string {
+  if (value === null || value === undefined) return "—";
+  return `${faGrouped.format(value)} تومان`;
 }
-// سال بدون جداکننده‌ی هزارگان (مثلاً ۱۳۱۵ و نه ۱٬۳۱۵)
-export function formatYear(year: number): string {
-  return year.toLocaleString("fa-IR", { useGrouping: false });
+
+export function formatYear(value: number | null | undefined): string {
+  if (value === null || value === undefined) return "—";
+  return faPlain.format(value);
 }
