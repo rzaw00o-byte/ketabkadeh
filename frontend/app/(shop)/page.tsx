@@ -44,7 +44,10 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen">
-      <header className="relative overflow-hidden bg-ink text-paper">
+     <header
+        className="relative overflow-hidden bg-ink text-paper"
+        style={{ backgroundColor: "var(--color-ink)" }}
+      >
         <div
           aria-hidden
           className="absolute inset-0"
@@ -53,8 +56,8 @@ export default async function Home() {
               "radial-gradient(60rem 30rem at 85% -10%, rgba(180,83,9,.55), transparent 60%), radial-gradient(50rem 26rem at 10% 110%, rgba(15,118,110,.4), transparent 60%), radial-gradient(40rem 22rem at 50% 50%, rgba(159,18,57,.3), transparent 65%)",
           }}
         />
-        <div aria-hidden className="orb left-[-6rem] top-[-4rem] h-72 w-72 bg-turquoise/40" />
-        <div aria-hidden className="orb right-[-4rem] bottom-[-6rem] h-80 w-80 bg-saffron/40" style={{ animationDelay: "-8s" }} />
+        <div aria-hidden className="orb -left-24 -top-16 h-72 w-72 bg-turquoise/40" />
+        <div aria-hidden className="orb -right-16 -bottom-24 h-80 w-80 bg-saffron/40" style={{ animationDelay: "-8s" }} />
 
         <div className="relative mx-auto max-w-6xl px-6 py-20">
           <p className="rise text-sm font-bold tracking-wide text-saffron">فروشگاه اینترنتی کتاب</p>
@@ -66,7 +69,7 @@ export default async function Home() {
             جستجو کنید، فیلتر کنید و نسخهٔ مناسب خود را انتخاب کنید.
           </p>
           <div className="rise mt-8 flex flex-wrap gap-3" style={{ animationDelay: "240ms" }}>
-            <a href="#catalog" className="rounded-xl bg-gradient-to-l from-saffron to-lacquer px-6 py-3 font-extrabold text-white shadow-lg shadow-lacquer/30 transition-transform hover:scale-105">
+             <a href="#catalog" className="rounded-xl bg-saffron bg-linear-to-l from-saffron to-lacquer px-6 py-3 font-extrabold text-white shadow-lg shadow-lacquer/30 transition-transform hover:scale-105">
               کاوش کتاب‌ها
             </a>
             <a href="#why" className="rounded-xl border border-paper/30 px-6 py-3 font-extrabold text-paper transition-colors hover:bg-paper/10">

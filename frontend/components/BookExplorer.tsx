@@ -59,7 +59,7 @@ export default function BookExplorer({ books }: { books: BookListItem[] }) {
               aria-pressed={format === o.value}
               className={`rounded-xl px-3 py-2 text-sm font-bold transition-all ${
                 format === o.value
-                  ? "bg-gradient-to-l from-saffron to-lacquer text-white shadow-sm"
+                  ? "bg-linear-to-l from-saffron to-lacquer text-white shadow-sm"
                   : "bg-paper text-ink-soft hover:bg-saffron/15"
               }`}
             >

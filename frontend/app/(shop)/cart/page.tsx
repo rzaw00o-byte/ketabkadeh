@@ -159,7 +159,7 @@ export default function CartPage() {
             <ul className="mt-4 space-y-3">
               {entries.map(([key, e]) => (
                 <li key={key} className="rise flex flex-wrap items-center gap-4 rounded-xl border border-saffron/20 bg-parchment p-4 shadow-sm">
-                  <div className="flex h-16 w-12 items-center justify-center rounded bg-gradient-to-br from-paper to-saffron/15 text-xs text-ink-soft">جلد</div>
+                  <div className="flex h-16 w-12 items-center justify-center rounded bg-linear-to-br from-paper to-saffron/15 text-xs text-ink-soft">جلد</div>
                   <div className="min-w-[160px] flex-1">
                     <p className="font-extrabold">{e.title}</p>
                     <p className="text-sm text-ink-soft">{FORMAT_LABEL[e.format]} · {formatToman(e.price)}</p>

@@ -12,8 +12,8 @@ export default function BookCard({ book, index = 0 }: { book: BookListItem; inde
       style={{ animationDelay: `${Math.min(index, 8) * 60}ms` }}
       className="rise group relative flex flex-col overflow-hidden rounded-xl border border-saffron/15 bg-parchment shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-saffron/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-saffron"
     >
-      <span aria-hidden className="absolute inset-y-0 right-0 w-1 bg-gradient-to-b from-saffron via-lacquer to-turquoise" />
-      <div className="relative aspect-[2/3] w-full overflow-hidden bg-gradient-to-br from-paper to-saffron/15">
+      <span aria-hidden className="absolute inset-y-0 right-0 w-1 bg-linear-to-b from-saffron via-lacquer to-turquoise" />
+      <div className="relative aspect-[2/3] w-full overflow-hidden bg-linear-to-br from-paper to-saffron/15">
         {book.cover ? (
           <Image
             src={book.cover.url}

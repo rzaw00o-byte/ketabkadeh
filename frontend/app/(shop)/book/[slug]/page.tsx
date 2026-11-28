@@ -119,7 +119,7 @@ export default async function BookPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
 
-      <header className="bg-gradient-to-l from-amber-800 via-amber-700 to-stone-900 text-amber-50">
+      <header className="bg-linear-to-l from-amber-800 via-amber-700 to-stone-900 text-amber-50">
         <div className="mx-auto max-w-5xl px-6 py-8">
           <nav aria-label="مسیر صفحه" className="mb-4 text-sm text-amber-200">
             <ol className="flex flex-wrap items-center gap-2">
@@ -177,7 +177,7 @@ export default async function BookPage({ params }: Props) {
             <div
               role="img"
               aria-label={`جلد کتاب ${book.title} موجود نیست`}
-              className="flex aspect-[2/3] w-full items-center justify-center rounded-xl bg-gradient-to-br from-stone-200 to-amber-100 text-stone-500 shadow-inner"
+              className="flex aspect-[2/3] w-full items-center justify-center rounded-xl bg-linear-to-br from-stone-200 to-amber-100 text-stone-500 shadow-inner"
             >
               بدون جلد
             </div>
